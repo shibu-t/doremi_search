@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset=utf-8>
+        <title>Sample</title>
+        <script type="text/javascript">
+            var model_order = [0, 1, 2],
+                user_order  = [],
+                isOver = 0,
+                model_order_length = model_order.length,
+                i = 0;
+
+            function load () {
+            }
+
+            function check () {
+                if (user_order[i] !== model_order[i]) {
+                    isOver = 1;
+                    alert('game over');
+                }
+                if (i === model_order_length-1 && isOver === 0) {
+                    alert('game clear');
+                }
+            }
+
+            function key (keyCode) {
+                switch (keyCode) {
+                    // up
+                    case 38:  
+                        break;
+                    // right
+                    case 39:
+                        user_order.push(0);
+                        check();
+                        i++;
+                        break;
+                    // left
+                    case 37:
+                        user_order.push(1);
+                        check();
+                        i++;
+                        break;
+                    // down
+                    case 40:
+                        user_order.push(2);
+                        check();
+                        i++;
+                        break;
+                    default:
+                        return;
+                }
+            }
+        </script>
+    </head>
+
+    <body onload="load()" onkeydown="key(event.keyCode)">
+    </body>
+</html>
