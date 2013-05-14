@@ -2,15 +2,22 @@
 <html>
     <head>
         <meta charset=utf-8>
+        <link rel="stylesheet" type="text/css" media="all" href="css/reset.css" />
+        <link rel="stylesheet" type="text/css" media="all" href="css/main.css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <title>Sample</title>
         <script type="text/javascript">
             var model_order = [0, 1, 2],
                 user_order  = [],
                 isOver = 0,
                 model_order_length = model_order.length,
-                i = 0;
+                i = 0,
+                isRedFinish = 0,
+                isYellowFinish = 0,
+                isBlueFinish = 0;
 
             function load () {
+                flashAll(model_order);
             }
 
             function check () {
@@ -21,6 +28,32 @@
                 if (i === model_order_length-1 && isOver === 0) {
                     alert('game clear');
                 }
+            }
+
+            function flashAll(order) {
+                for (var i=0;i<model_order_length;i++) {
+                    if (order[i] === 0) {
+                        flashRed();
+                    } else if (order[i] === 1) {
+                        flashYellow();
+                    } else {
+                        flashBlue();
+                    }
+                }
+            }
+
+            function flashRed () {
+                $('#red_circle').fadeIn("slow").fadeOut("slow", flashYellow());
+            }
+
+            function flashYellow () {
+                $('#yellow_circle').fadeIn("slow").fadeOut("slow");
+                isYellowFinish = 1;
+            }
+
+            function flashBlue () {
+                $('#blue_circle').fadeIn("slow").fadeOut("slow");
+                isBlueFinish = 1;
             }
 
             function key (keyCode) {
@@ -50,9 +83,23 @@
                         return;
                 }
             }
+
+            function sleep(t){ 
+                var d1 = new Date().getTime(); 
+                var d2 = new Date().getTime(); 
+                while( d2 < d1+t ){    //T秒待つ 
+                    d2=new Date().getTime(); 
+                } 
+                return; 
+            } 
         </script>
     </head>
 
     <body onload="load()" onkeydown="key(event.keyCode)">
+        <ul>
+            <li id="red_circle" class="circle"></li>
+            <li id="yellow_circle" class="circle"></li>
+            <li id="blue_circle" class="circle"></li>
+        </ul>
     </body>
 </html>
