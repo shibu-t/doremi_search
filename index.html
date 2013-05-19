@@ -7,7 +7,7 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <title>Sample</title>
         <script type="text/javascript">
-            var model_order = [0, 1, 2,1,2,0,0,2,1],
+            var model_order = [0, 1, 2, 1, 2, 0, 0, 2, 1],
                 user_order  = [],
                 isOver = 0,
                 model_order_length = model_order.length,
@@ -17,22 +17,67 @@
                 isYellowFinish = 0,
                 isBlueFinish = 0;
 
-            function load () {
+            function load() {
+            }
+
+            function gameStart() {
+                $('#start_button').css('visibility', 'hidden');
                 flashEach();
             }
 
-            function check () {
+            function redButtonClick() {
+                user_order.push(0);
+                var displayText = getAllInputChars();
+                $('#user_order').text(displayText);
+                check();
+                i++;
+            }
+
+            function yellowButtonClick() {
+                user_order.push(1);
+                var displayText = getAllInputChars();
+                $('#user_order').text(displayText);
+                check();
+                i++;
+            }
+
+            function blueButtonClick() {
+                user_order.push(2);
+                var displayText = getAllInputChars();
+                $('#user_order').text(displayText);
+                check();
+                i++;
+            }
+
+            function getAllInputChars() {
+                var text = "";
+                for (var tmp =0;tmp<user_order.length;tmp++) {
+                    if (user_order[tmp] === 0) {
+                        text += '赤';
+                    } else if (user_order[tmp] === 1) {
+                        text += '黃';
+                    } else {
+                        text += '青';
+                    }
+                }
+                return text;
+            }
+
+            function check() {
                 if (user_order[i] !== model_order[i]) {
                     isOver = 1;
+                    becomeInputButtonsDisabled();
                     alert('game over');
                 }
                 if (i === model_order_length-1 && isOver === 0) {
+                    becomeInputButtonsDisabled();
                     alert('game clear');
                 }
             }
 
             function flashEach() {
-                setInterval('flash(model_order)', 800);
+                becomeInputButtonsDisabled();
+                flash_timer = setInterval('flash(model_order)', 800);
             }
 
             function flash(order) {
@@ -45,22 +90,37 @@
                         flashBlue();
                     }
                     j++;
+                } else {
+                    clearInterval(flash_timer);
+                    becomeInputButtonsAbled()
                 }
             }
 
-            function flashRed () {
+            function becomeInputButtonsDisabled() {
+                $('#red_button').attr({disabled:"true"});
+                $('#yellow_button').attr({disabled:"true"});
+                $('#blue_button').attr({disabled:"true"});
+            }
+
+            function becomeInputButtonsAbled() {
+                $('#red_button').removeAttr("disabled");
+                $('#yellow_button').removeAttr("disabled");
+                $('#blue_button').removeAttr("disabled");;
+            }
+
+            function flashRed() {
                 $('#red_circle').fadeIn().fadeOut().fadeIn();
             }
 
-            function flashYellow () {
+            function flashYellow() {
                 $('#yellow_circle').fadeIn().fadeOut().fadeIn();
             }
 
-            function flashBlue () {
+            function flashBlue() {
                 $('#blue_circle').fadeIn().fadeOut().fadeIn();
             }
 
-            function key (keyCode) {
+            function key(keyCode) {
                 switch (keyCode) {
                     // up
                     case 38:  
@@ -92,10 +152,22 @@
     </head>
 
     <body onload="load()" onkeydown="key(event.keyCode)">
-        <ul>
-            <li id="red_circle" class="circle"></li>
-            <li id="yellow_circle" class="circle"></li>
-            <li id="blue_circle" class="circle"></li>
-        </ul>
+        <div id="body">
+            <input type="button" id="start_button" value="start!" onClick="gameStart();">
+            
+            <ul style="padding-top:20px">
+                <li id="red_circle" class="circle"></li>
+                <li id="yellow_circle" class="circle"></li>
+                <li id="blue_circle" class="circle"></li>
+            </ul>
+
+            <ul id="input_button" style="padding-top:20px">
+                <li class="button"><input type="button" id="red_button" onClick="redButtonClick()" value="push"></li>
+                <li class="button"><input type="button" id="yellow_button" onClick="yellowButtonClick()" value="push"></li>
+                <li class="button"><input type="button" id="blue_button" onClick="blueButtonClick()" value="push"></li>
+            </ul>
+
+            <p id="user_order"></p>
+        </div>
     </body>
 </html>
