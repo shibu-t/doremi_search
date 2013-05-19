@@ -7,17 +7,18 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <title>Sample</title>
         <script type="text/javascript">
-            var model_order = [0, 1, 2],
+            var model_order = [0, 1, 2,1,2,0,0,2,1],
                 user_order  = [],
                 isOver = 0,
                 model_order_length = model_order.length,
                 i = 0,
+                j = 0,
                 isRedFinish = 0,
                 isYellowFinish = 0,
                 isBlueFinish = 0;
 
             function load () {
-                flashAll(model_order);
+                flashEach();
             }
 
             function check () {
@@ -30,30 +31,33 @@
                 }
             }
 
-            function flashAll(order) {
-                for (var i=0;i<model_order_length;i++) {
-                    if (order[i] === 0) {
+            function flashEach() {
+                setInterval('flash(model_order)', 800);
+            }
+
+            function flash(order) {
+                if (j<model_order_length) {
+                    if (order[j] === 0) {
                         flashRed();
-                    } else if (order[i] === 1) {
+                    } else if (order[j] === 1) {
                         flashYellow();
                     } else {
                         flashBlue();
                     }
+                    j++;
                 }
             }
 
             function flashRed () {
-                $('#red_circle').fadeIn("slow").fadeOut("slow", flashYellow());
+                $('#red_circle').fadeIn().fadeOut().fadeIn();
             }
 
             function flashYellow () {
-                $('#yellow_circle').fadeIn("slow").fadeOut("slow");
-                isYellowFinish = 1;
+                $('#yellow_circle').fadeIn().fadeOut().fadeIn();
             }
 
             function flashBlue () {
-                $('#blue_circle').fadeIn("slow").fadeOut("slow");
-                isBlueFinish = 1;
+                $('#blue_circle').fadeIn().fadeOut().fadeIn();
             }
 
             function key (keyCode) {
@@ -84,14 +88,6 @@
                 }
             }
 
-            function sleep(t){ 
-                var d1 = new Date().getTime(); 
-                var d2 = new Date().getTime(); 
-                while( d2 < d1+t ){    //T秒待つ 
-                    d2=new Date().getTime(); 
-                } 
-                return; 
-            } 
         </script>
     </head>
 
